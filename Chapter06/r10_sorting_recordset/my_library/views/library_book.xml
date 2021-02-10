@@ -19,9 +19,9 @@
             <form>
                 <header>
                     <button name="make_available" string="Make Available" type="object"/>
+                    <!-- Añadido --><button name="make_unavailable" string="Make Unavailable" type="object"/>
                     <button name="make_borrowed"  string="Make Borrowed" type="object"/>
                     <button name="make_lost"  string="Make Lost" type="object"/>
-                    <button name="make_unavailable" string="Make Unavailable" type="object"/>
                     <button name="create_categories" string="Create Categories" type="object"/>
                     <button name="change_update_date" string="Update Date" type="object"/>
                     <button name="find_book" string="Find Book" type="object"/>
@@ -34,19 +34,19 @@
                     <group>
                         <field name="name"/>
                         <field name="author_ids" widget="many2many_tags"/>
+                        <!-- Añadido --><field name="member_id"/>
                     </group>
                     <group>
                         <field name="category_id"/>
                         <field name="date_release"/>
                         <field name="date_updated"/>
-                        <field name="member_id"/>
                     </group>
                 </group>
             </form>
         </field>
     </record>
     
-    <!-- Form View-->
+    <!-- Añadido -->
     <record id="library_member_view_form" model="ir.ui.view">
         <field name="name">Library Member Form</field>
         <field name="model">library.member</field>
@@ -72,9 +72,9 @@
         <field name="name">Library Book List</field>
         <field name="model">library.book</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree>               
                 <field name="name"/>
-                <field name="date_release"/>
+                <field name="date_release"/>                
             </tree>
         </field>
     </record>

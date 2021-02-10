@@ -5,6 +5,8 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
+from datetime import datetime, timedelta
+
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +26,21 @@ class LibraryBook(models.Model):
         ('borrowed', 'Borrowed'),
         ('lost', 'Lost')],
         'State', default="draft")
+
+    # Field que indica si un libro esta prestado
+    is_lent = fields.Boolean('Lent', compute='check_lent', default=False)
+
+    # Prestamos asociados a un libro
+    loan_ids = fields.One2many('library.loan', inverse_name='book_id')
+
+    book_image = fields.Binary('Portada')
+    
+    #Comprueba si el libro esta prestado comprobando que hay un library.loan asociado y con date_end posterior a la actual
+    @api.multi
+    def check_lent(self):
+        for book in self:
+            domain = ['&',('book_id.id', '=', book.id), ('date_end', '>=', datetime.now())]
+            book.is_lent = self.env['library.loan'].search(domain, count=True) > 0         
 
     @api.model
     def is_allowed_transition(self, old_state, new_state):
@@ -108,3 +125,35 @@ class LibraryMember(models.Model):
     date_end = fields.Date('Termination Date')
     member_number = fields.Char()
     date_of_birth = fields.Date('Date of birth')
+
+
+class LibraryLoan(models.Model):
+    _name = 'library.loan'
+    _description = 'Library Loan'
+    _rec_name = 'book_id'
+    _order = 'date_end desc'
+
+    member_id = fields.Many2one('library.member', required=True)
+    book_id =  fields.Many2one('library.book', required=True)
+    date_start = fields.Date('Loan Start', default=lambda *a:datetime.now().strftime('%Y-%m-%d'))
+    date_end = fields.Date('Loan End', default=lambda *a:(datetime.now() + timedelta(days=(6))).strftime('%Y-%m-%d'))
+
+    member_image = fields.Binary('Member Image', related='member_id.partner_id.image')
+
+    # Comprueba que un libro no este prestado
+    @api.constrains('book_id')
+    def _check_book_id(self):
+        for loan in self:
+            book = loan.book_id
+            domain = ['&',('book_id.id', '=', book.id), ('date_end', '>=', datetime.now())]
+            # Comprueba que hay más de 1 registro pues el record que se está creando también cuenta aunque no esté todavía en la BBDD
+            book.is_lent = self.search(domain, count=True) > 1 
+            if book.is_lent:
+                raise models.ValidationError('Book is Lent!') 
+                
+
+    @api.constrains('date_end', 'date_start')
+    def _check_dates(self):
+        for loan in self:
+            if loan.date_start > loan.date_end:
+                raise models.ValidationError('Start date After end date!')
