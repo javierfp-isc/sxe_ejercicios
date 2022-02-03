@@ -20,6 +20,7 @@
                     <button name="make_available" string="Make Available" type="object"/>
                     <button name="make_borrowed"  string="Make Borrowed" type="object"/>
                     <button name="make_lost"  string="Make Lost" type="object"/>
+                    <button name="make_unavailable" string="Make Unavailable" type="object"/>
                     <button name="log_all_library_members"  string="Log Members" type="object"/>
                     <button name="create_categories" string="Create Categories" type="object"/>
                     <button name="change_release_date" string="Update Date" type="object"/>
@@ -37,6 +38,27 @@
                     <group>
                         <field name="category_id"/>
                         <field name="date_release"/>
+                        <field name="member_id"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="library_member_view_form" model="ir.ui.view">
+        <field name="name">Library Member Form</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <form>                
+                <group>
+                    <group>
+                        <field name="partner_id"/>                        
+                    </group>
+                    <group>
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                        <field name="date_of_birth"/>
+                        <field name="member_number"/>
                     </group>
                 </group>
             </form>

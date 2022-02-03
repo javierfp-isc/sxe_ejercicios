@@ -20,9 +20,12 @@ class LibraryBook(models.Model):
     state = fields.Selection([
         ('draft', 'Unavailable'),
         ('available', 'Available'),
+        ('unavailable', 'Unavailable'),
         ('borrowed', 'Borrowed'),
         ('lost', 'Lost')],
         'State', default="draft")
+    member_id = fields.Many2one('library.member', string='Lector')
+
 
     @api.model
     def is_allowed_transition(self, old_state, new_state):
@@ -31,7 +34,8 @@ class LibraryBook(models.Model):
                    ('borrowed', 'available'),
                    ('available', 'lost'),
                    ('borrowed', 'lost'),
-                   ('lost', 'available')]
+                   ('lost', 'available'),
+                   ('available', 'unavailable')]
         return (old_state, new_state) in allowed
 
     def change_state(self, new_state):
@@ -44,6 +48,9 @@ class LibraryBook(models.Model):
 
     def make_available(self):
         self.change_state('available')
+
+    def make_unavailable(self):
+        self.change_state('unavailable')
 
     def make_borrowed(self):
         self.change_state('borrowed')
