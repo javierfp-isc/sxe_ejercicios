@@ -34,7 +34,11 @@
                     <group>
                         <field name="category_id"/>
                         <field name="date_release"/>
+                        <field name="is_lent"/> 
                     </group>
+                </group>
+                <group>
+                    <field name="loan_ids"/> 
                 </group>
             </form>
         </field>
