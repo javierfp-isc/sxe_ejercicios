@@ -3,7 +3,7 @@
     <record id='library_loan_action' model='ir.actions.act_window'>
         <field name="name">Library Loans</field>
         <field name="res_model">library.loan</field>
-        <field name="view_type">form</field>
+        <!--field name="view_type">form</field-->
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -16,7 +16,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>                    
-                    <button name="find_loan" string="Find Loan" type="object"/>                    
+                    <!--button name="find_loan" string="Find Loan" type="object"/-->                    
                 </header>
                 <group>
                     <group>

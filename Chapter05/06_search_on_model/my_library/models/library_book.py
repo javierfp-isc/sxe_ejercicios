@@ -136,7 +136,7 @@ class LibraryLoan(models.Model):
     date_start = fields.Date('Loan Start', default=lambda *a:datetime.now().strftime('%Y-%m-%d'))
     date_end = fields.Date('Loan End', default=lambda *a:(datetime.now() + timedelta(days=(6))).strftime('%Y-%m-%d'))
 
-    member_image = fields.Binary('Member Image', related='member_id.partner_id.image')
+    member_image = fields.Binary('Member Image', related='member_id.partner_id.image_256')
 
     # Comprueba que un libro no este prestado
     @api.constrains('book_id')

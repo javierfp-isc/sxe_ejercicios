@@ -9,7 +9,7 @@ Description related to library.
     """,  # Supports reStructuredText(RST) format
     'author': "Parth Gajjar",
     'website': "http://www.example.com",
-    'category': 'Tools',
+    'category': 'Uncategorized',
     'version': '14.0.1',
     'depends': ['base'],
 
@@ -18,6 +18,8 @@ Description related to library.
         'security/ir.model.access.csv',
         'views/library_book.xml',
         'views/library_book_categ.xml',
+        'views/library_loan.xml',
+        'views/library_member.xml'
     ],
     # This demo data files will be loaded if db initialize with demo data (commented becaues file is not added in this example)
     # 'demo': [
