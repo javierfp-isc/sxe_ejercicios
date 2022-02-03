@@ -46,4 +46,16 @@
             </tree>
         </field>
     </record>
+
+    <!-- Calendar View -->  
+    <record id="library_loan_view_calendar" model="ir.ui.view">
+        <field name="name">Library Loan Calendar</field>
+        <field name="model">library.loan</field>
+        <field name="arch" type="xml">            
+            <calendar string="Lents" date_start="date_start" date_stop="date_end" mode="week" color="book_id" form_view_id="library_loan_view_form">
+                <field name="book_id" />
+                <field name="member_id" />                
+            </calendar>        
+        </field>
+    </record>
 </odoo>

@@ -35,12 +35,23 @@ class LibraryBook(models.Model):
 
     book_image = fields.Binary('Portada')
 
+    last_loan_end = fields.Date('Fecha Final Reserva', compute='get_last_loan_end', store=False)
+
+
     #Comprueba si el libro esta prestado comprobando que hay un library.loan asociado y con date_end posterior a la actual
     def check_lent(self):
         for book in self:
             domain = ['&',('book_id.id', '=', book.id), ('date_end', '>=', datetime.now())]
             book.is_lent = self.env['library.loan'].search(domain, count=True) > 0         
 
+    def get_last_loan_end(self):
+        for book in self:
+            if book.is_lent:
+                for loan in book.loan_ids:            
+                    book.last_loan_end = loan.date_end
+                    break
+            else:
+                book.last_loan_end = None
 
     @api.model
     def is_allowed_transition(self, old_state, new_state):
