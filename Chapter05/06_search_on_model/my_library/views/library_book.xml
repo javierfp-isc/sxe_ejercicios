@@ -34,7 +34,8 @@
                     <group>
                         <field name="category_id"/>
                         <field name="date_release"/>
-                        <field name="is_lent"/> 
+                        <field name="is_lent"/>
+                        <field name="book_image"/> 
                     </group>
                 </group>
                 <group>
